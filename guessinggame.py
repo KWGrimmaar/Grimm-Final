@@ -104,37 +104,37 @@ def guessingGame():
     remainingCards=len(deck)
     #print(len(deck))
     initials = initialsGather()
-    for card in range(52):
-        points = 20
-        card_value = 0 
-        card = {} 
-        if len(deck) == 0:
-            print("Congratulations. You've guessed every card!")
+    if startGame == "":
+        for card in range(52):
+            points = 20
+            card_value = 0 
+            card = {} 
+            if len(deck) == 0:
+                print("Congratulations. You've guessed every card!")
+                try:
+                    print("Your score was", score, "after", count, "cards\n")
+                    uploadScore=input("Upload scores?\n Yes \n No \n -----\n")
+                    uploadScore=uploadScore.strip()
+                    uploadScore=uploadScore.lower()
+                    if uploadScore == "y" or uploadScore == "yes":
+                        print("Uploading")
+                        leaderboard=open("leaderboard.csv","a")
+                        leaderboard.write(initials+","+str(score)+"\n")
+                        leaderboard.close()
+                    if uploadScore == "n" or uploadScore == "no":
+                        print("Thanks for playing!")
+                        quit()
+                except:
+                    print("Invalid entry. \n")
+            random_card = random.choice(list(deck.keys()))
+            val = deck[random_card]
+            card_value += val
+            card[random_card] = val
+            #print(random_card) # For testing card is correctly drawn and comparison to value
+            #print(card_value) # For testing value is correct and compare to card drawn
+            print("Card", str(count) + ".", str(remainingCards - 1), "cards remain." )       
             try:
-                print("Your score was", score, "after", count, "cards\n")
-                uploadScore=input("Upload scores?\n Yes \n No \n -----\n")
-                uploadScore=uploadScore.strip()
-                uploadScore=uploadScore.lower()
-                if uploadScore == "y" or uploadScore == "yes":
-                    print("Uploading")
-                    leaderboard=open("leaderboard.csv","a")
-                    leaderboard.write(initials+","+str(score)+"\n")
-                    leaderboard.close()
-                if uploadScore == "n" or uploadScore == "no":
-                    print("Thanks for playing!")
-                    quit()
-            except:
-                print("Invalid entry. \n")
-        random_card = random.choice(list(deck.keys()))
-        val = deck[random_card]
-        card_value += val
-        card[random_card] = val
-        #print(random_card) # For testing card is correctly drawn and comparison to value
-        #print(card_value) # For testing value is correct and compare to card drawn
-        print("Card", str(count) + ".", str(remainingCards - 1), "cards remain." )  
-        if startGame == "":     
-            try:
-                guess=input("Guess the value of the card. ")
+                guess=input("\nGuess the value of the card. \n")
                 if guess == "stop":
                     if score == 0:
                         print("Score is not high enough to submit.")
@@ -192,9 +192,9 @@ def guessingGame():
                 score += points
                 print("Your total score is",score)
             remainingCards-=1   
-        else:
-            print("Invalid Entry. Press Enter to begin or type stop to end: ")
-            startGame = input("Press Enter to begin or type stop to end: ")
+    else:
+        print("Invalid Entry. Press Enter to begin or type stop to end: ")
+        startGame = input("Press Enter to begin or type stop to end: ")
     
                         
 startMenu()
